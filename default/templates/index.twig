@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Slim 3</title>
+        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <style>
+            body {
+                background-color: #d2c9c9;
+                margin: 50px 0 0 0;
+                padding: 0;
+                width: 100%;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                text-align: center;
+                color: #aaa;
+                font-size: 18px;
+            }
+            
+            #header {
+                background-color: rgb(209, 39, 73);
+                width: 1021px;
+                top: -61px;
+                position: relative;
+                height: 49px;
+                left:  128px;
+            }
+
+            .conex {
+                    padding: 4px 25px 2px 26px;
+                    display: inline-block;
+                    color: white;
+                    top: 14px;
+                    position: relative;
+                    left: 363px;
+                    background-color: #d2c9c9;
+                    border-radius: 7px;
+                    height: 24px;
+                    border: 1px solid white;
+                }
+
+                .inscrip {
+                    padding: 4px 25px 2px 26px;
+                    display: flex;
+                    color: white;
+                    top:-18px;
+                    position: relative;
+                    left: 660px;
+                    width: 86px;
+                    text-decoration: none;
+                    background-color: #d2c9c9;
+                    border-radius: 7px;
+                    height: 24px;
+                    border: 1px solid white;
+                }
+            
+
+            h1 {
+                color: white;
+                letter-spacing: -3px;
+                text-decoration: none;
+                font-family: FreeMono, monospace;
+                font-size: 29px;
+                font-weight: bold;
+                margin-bottom: 0px;
+                position: relative;
+                margin-left: -293px;
+                top: -73px
+            }
+
+            #tab > li {
+                text-decoration: none;
+            }
+
+            .cadre {
+                position: relative;
+                color: red;
+                background-color: #fbfafa;
+                width: 529px;
+                height: 150px;
+                border: 0.10px solid #bbc2fb;
+                top:  128px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="header">
+            <header>
+            <a href="#"><span class="conex">connexion</span></a>
+            </header>
+             <a href="#"><span class="inscrip">Inscription</span></a>
+            </header>
+            <a href="#">
+                <h1>My Blog</h1>
+             </a>    
+        </div>   
+        <form action="{{ path_for('login') }}" method="post">
+        <input type="email" name="mail" placeholder="email" required>
+        <input type="password" name="pwd" placeholder="password" required>    
+        <input type="submit" value="Go">
+        </form>
+        </div>
+        <div>
+          <ul id="tab">
+            <li class="cadre"></li>
+            <li class="cadre"></li>
+            <li class="cadre"></li>
+            
+            
+          </ul>  
+        </div>
+        </body>
+    </html>
