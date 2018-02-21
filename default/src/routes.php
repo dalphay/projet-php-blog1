@@ -4,80 +4,193 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use simplon\entities\User;
 use simplon\dao\DaoUser;
+use simplon\entities\Articles;
+use simplon\dao\DaoArticles;
+
+
 
 // Routes
 
 
 $app->get('/', function (Request $request, Response $response, array $args) {
+    $user = $_SESSION['user'];
+
     //On instancie le dao
-    $dao = new DaoPerson();
-    //On récupère les Persons via la méthode getAll
-    $persons = $dao->getAll();
-    //On passe les persons à la vue index.twig
+    $dao = new DaoUser();
+    //On récupère les users via la méthode getAll
+    $users = $dao->getAll();
+    //On passe les users à la vue index.twig
     return $this->view->render($response, 'index.twig', [
-        'persons' => $persons
+        'users' => $users
     ]);
 })->setName('index');
 
-$app->get('/addperson', function (Request $request, Response $response, array $args) {
-    return $this->view->render($response, 'addperson.twig');
-})->setName('addperson');
+$app->get('/blog/{id}', function (Request $request, Response $response, array $args) {
+    $user = $_SESSION['user'];
+
+    $dao = new DaoUser();
+    $dao2 = new DaoArticles(); 
+    $articles = $dao2->getByUser($args['id']);
+
+    return $this->view->render($response, 'blog.twig', [
+        'articles' => $articles
+    ]);
+})->setName('index');
+
+$app->get('/adduser', function (Request $request, Response $response, array $args) {
+    return $this->view->render($response, 'inscription.twig');
+})->setName('adduser');
 
 
 
-$app->post('/addperson', function (Request $request, Response $response, array $args) {
+$app->post('/adduser', function (Request $request, Response $response, array $args) {
     //On récupère les données du formulaire
     $form = $request->getParsedBody();
     //On crée une Person à partir de ces données
-    $newPerson = new Person($form['name'], new DateTime($form['birthdate']), $form['gender']);
+    $newuser = new User($form['name'], $form['email'], $form['password']);
     //On instancie le DAO
-    $dao = new DaoPerson();
-    //On utilise la méthode add du DAO en lui donnant la Person qu'on vient de créer
-    $dao->add($newPerson);
+    $dao = new DaoUser();
+    //On utilise la méthode add du DAO en lui donnant le user qu'on vient de créer
+    $dao->add($newuser);
     //On affiche la même vue que la route en get
-    return $this->view->render($response, 'addperson.twig', [
-        'newId' => $newPerson->getId()
+    return $this->view->render($user, 'adduser.twig', [
+        'newId' => $newUser->getId()
     ]);
-})->setName('addperson');
+})->setName('adduser');
 
-$app->get('/updateperson/{id}', function (Request $request, Response $response, array $args) {
+$app->get('/updateuser/{id}', function (Request $request, Response $response, array $args) {
     //On instancie le DAO
     $dao = new DaoUser;
     //On récupère la Person à partir de l'id
-    $person = $dao->getById($args['id']);
+    $user = $dao->getById($args['id']);
     // On affiche la vue du formulaire d'update d'une peronne
-    return $this->view->render($response, 'updateperson.twig', [
-        'person' => $person
+    return $this->view->render($response, 'updateuser.twig', [
+        'user' => $user
     ]);
     
-})->setName('updateperson');
+})->setName('updateuser');
 
-$app->post('/updateperson/{id}', function (Request $request, Response $response, array $args) {
+$app->post('/updateuser/{id}', function (Request $request, Response $response, array $args) {
     //On instancie le DAO
-    $dao = new DaoPerson;
+    $dao = new DaoUser;
     //On récupère les données du formulaire
     $postData = $request->getParsedBody();
     //On récupère la Person à partir de l'id
-    $person = $dao->getById($args['id']);
+    $user = $dao->getById($args['id']);
     //On met à jour son nom, sa date de naissance et son genre
     $person->setName($postData['name']);
-    $person->setBirthdate(new \DateTime($postData['birthdate']));
-    $person->setGender($postData['gender']);
+    $person->setEmail($postData['email']);
+    $person->setPassword($postData['password']);
     //On update la personne
     $dao->update($person);
     //On récupère l'URL da la route index (page d'accueil)
     $redirectUrl = $this->router->pathFor('index');
     //On redirige l'utilisateur sur la page d'accueil
     return $response->withRedirect($redirectUrl);
-})->setName('updateperson');
+})->setName('updateser');
 
-$app->get('/deleteperson/{id}', function (Request $request, Response $response, array $args) {
+$app->get('/deleteuser/{id}', function (Request $request, Response $response, array $args) {
     //On instancie le DAO
     $dao = new DaoPerson;
-    //On delete la personne
+    //On delete le user
     $dao->delete($args['id']);
     //On récupère l'URL da la route index (page d'accueil)
     $redirectUrl = $this->router->pathFor('index');
     //On redirige l'utilisateur sur la page d'accueil
     return $response->withRedirect($redirectUrl);
-})->setName('deleteperson');
+})->setName('deleteuser');
+
+
+//séparation...!
+
+
+
+$app->get('/articles', function (Request $request, Response $response, array $args) {
+    $dao = new DaoArtciles();
+    $articles = $dao->getAll();
+
+    return $this->view->render($response, 'index.twig', [
+        'articles' => $articles
+    ]);
+})->setName('index');
+
+$app->get('/addarticles', function (Request $request, Response $response, array $args) {
+    return $this->view->render($response, 'addarticles.twig');
+})->setName('addarticles');
+
+
+
+$app->post('/addarticles', function (Request $request, Response $response, array $args) {
+    $form = $request->getParsedBody();
+
+    $newarticles = new Articles($form['date'], new $form['titre'], $form['contenu']);
+    $dao = new DaoUser();
+
+    $dao->add($newuser);
+    return $this->view->render($user, 'addarticles.twig', [
+        'newId' => $newUser->getId()
+    ]);
+})->setName('addarticles');
+
+$app->get('/updatearticles/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoArtciles;
+
+    $arctiles = $dao->getById($args['id']);
+    return $this->view->render($response, 'updateuser.twig', [
+        'articles' => $articles
+    ]);
+    
+})->setName('updatearticles');
+
+$app->post('/updatearticles/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoUser;
+
+    $postData = $request->getParsedBody();
+    $user = $dao->getById($args['id']);
+
+    $person->setName($postData['date']);
+    $person->setEmail($postData['titre']);
+
+    $person->setPassword($postData['contenu']);
+    $dao->update($person);
+
+    $redirectUrl = $this->router->pathFor('index');
+    return $response->withRedirect($redirectUrl);
+})->setName('updatesarticles');
+
+$app->get('/deletearticles/{id}', function (Request $request, Response $response, array $args) {
+    $dao = new DaoArtciles;
+    $dao->delete($args['id']);
+    $redirectUrl = $this->router->pathFor('index');
+
+    return $response->withRedirect($redirectUrl);
+})->setName('deletearticles');
+
+
+$app->post('/login', function (Request $request, Response $response, array $args) {
+    $dao = new DaoUser;
+    $postData = $request->getParsedBody();
+    $user = $dao->getByEmail($postData['email']);
+    if(!empty($user) && $postData['password'] === $user->getPassword()){
+        $_SESSION['user']=$user;
+
+        return $response->withRedirect('/');
+
+    }
+
+    return $this->view->render($response, 'inscription.twig');
+
+
+    
+
+   
+})->setName('login');
+
+
+
+
+
+
+
+
+

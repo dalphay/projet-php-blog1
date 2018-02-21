@@ -17,14 +17,14 @@ class DaoUser {
       
         try {
            
-            $query = User::getInstance()->prepare('SELECT * FROM user');
+            $query = Connect::getInstance()->prepare('SELECT * FROM user');
             
             $query->execute();
            
             while($row = $query->fetch()) {
              
                 $users = new User($row['name'], 
-                            new \DateTime($row['email']), 
+                            $row['email'], 
                             $row['password'],
                             $row['id']);
             
@@ -49,8 +49,8 @@ class DaoUser {
             //Si le fetch nous renvoie quelque chose
             if($row = $query->fetch()) {
                 //On crée une instance de User
-                $pers = new Person($row['name'], 
-                            new \DateTime($row['email']), 
+                $pers = new User($row['name'], 
+                            $row['email'], 
                             $row['password'],
                             $row['id']);
                 //On return cette User
@@ -59,6 +59,7 @@ class DaoUser {
         }catch(\PDOException $e) {
             echo $e;
         }
+        
         /**
          * Si jamais on est pas passé dans le if ou autre, on renvoie null
          * qui est une valeur inexistante. C'est quelque chose d'assez
@@ -67,31 +68,7 @@ class DaoUser {
         return null;
     }
 
-    public function getAll():array {
-        
-         $tab = [];
-       
-         try {
-            
-             $query = User::getInstance()->prepare('SELECT * FROM user');
-             
-             $query->execute();
-            
-             while($row = $query->fetch()) {
-              
-                 $users = new User($row['name'], 
-                             new \DateTime($row['email']), 
-                             $row['password'],
-                             $row['id']);
-             
-                 $tab[] = $users;
-             }
-         }catch(\PDOException $e) {
-             echo $e;
-         }
-         
-         return $tab;
-     }
+    
     
      public function getByEmail($email) {
          
@@ -99,17 +76,17 @@ class DaoUser {
            
              $query = Connect::getInstance()->prepare('SELECT * FROM user WHERE email=:email');
           
-             $query->bindValue(':email', $email, \PDO::PARAM_INT);
+             $query->bindValue(':email', $email, \PDO::PARAM_STR);
              
              $query->execute();
              //Si le fetch nous renvoie quelque chose
              if($row = $query->fetch()) {
                  //On crée une instance de User
-                 $pers = new Person($row['name'], 
-                             new \DateTime($row['email']), 
-                             $row['password'],
-                             $row['id']);
-                 //On return cette User
+                 $pers = new User($row['name'], 
+                        $row['email'], 
+                        $row['password'],
+                        $row['id']);
+                        //On return cette User
                  return $pers;
              }
          }catch(\PDOException $e) {

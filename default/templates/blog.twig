@@ -88,6 +88,8 @@
         <div id="header">
             <header>                
                 <a href="{{ path_for('adduser') }}"><span class="conex">connexion</span></a>
+                {# <a href="{{ path_for('adduser') }}"><span class="conex">connexion</span></a> #}
+                
                 <h1>My Blog</h1>   
                 
             </header>
@@ -97,8 +99,8 @@
         <div>
             
             <ul id="tab">
-          {% for user in users %}
-                <li class="cadre">{{user.id}} {{person.name}} {{user.email}} {{user.password}}</li>
+          {% for article in articles %}
+                <li class="cadre">{{article.id}} {{article.titre}} {{article.contenu}}</li>
                 
           {% endfor %}                               
             </ul>                                 

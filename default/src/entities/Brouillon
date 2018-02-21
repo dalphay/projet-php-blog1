@@ -1,3 +1,66 @@
+<?php
+
+use Slim\Http\Request;
+use Slim\Http\Response;
+
+// Routes
+
+$app->get('/', function (Request $request, Response $response, array $args) {
+    // Sample log message
+    $this->logger->info("Slim-Skeleton '/' route");
+
+    // Render index view
+    return $this->view->render($response, 'index.twig', [
+        'args' => $args
+    ]);
+})->setName('index');
+
+// $app->post('/login', function (Request $request, Response $response, array $args) {
+//     // Sample log message
+//     $this->logger->info("Slim-Skeleton '/login' route");
+//     $body = $request->getParsedBody();
+//     $body['is_logged'] = ($body['mail'] === "alpha@gmail.com" && $body['pwd'] === "alphaa520");
+//     return $this->view->render($response, 'login.twig', $body);
+// });
+
+$app->get('/user', function (Request $request, Response $response, array $args) {
+
+    $this->logger->info("Slim-Skeleton '/' route");
+
+    return $this->view->render($response, 'index.twig', [
+        'args' => $args
+    ]);
+})->setName('index');
+
+$app->get('/articles', function (Request $request, Response $response, array $args) {
+    
+        $this->logger->info("Slim-Skeleton '/' route");
+    
+        return $this->view->render($response, 'index.twig', [
+            'args' => $args
+        ]);
+    })->setName('index');
+
+
+
+
+
+
+
+
+
+    mon code 
+
+
+    <!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
 <body>
 
     <a href="{{ path_for('index') }}">Retour</a>
@@ -8,32 +71,32 @@
     		<div class="" id="loginModal">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3>Avez vous un compte ?</h3>
+                <h3>Vous avez un compte ?</h3>
               </div>
               <div class="modal-body">
                 <div class="well">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="{{path_for('login')}}" data-toggle="tab">S'identifier</a></li>
-                    <li><a href="#create" data-toggle="tab">Créer compte</a></li>
+                    <li class="active" style="margin: 12px;"><a href="{{path_for('login')}}" data-toggle="tab">S'identifier</a></li>
+                    <li><a href="#" data-toggle="tab">Inscription</a></li>
                   </ul>
                   <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="login">
-                      <form class="form-horizontal" action="{{path_for('login')}}" method="POST">
+                      <form class="form-horizontal" action='' method="POST">
                         <fieldset>
                           <div id="legend">
-                            <legend class="">S'identifier</legend>
+                            <legend class="">Login</legend>
                           </div>    
                           <div class="control-group">
-                            <!-- Username -->
-                            <label class="control-label"  for="username">Nom utilisateur</label>
+                            <!-- Nom-Utilisateur -->
+                            <label class="control-label"  for="username">Nom d'utilisateur</label>
                             <div class="controls">
-                              <input type="text" id="username" name="email" placeholder="" class="input-xlarge">
+                              <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
                             </div>
                           </div>
      
                           <div class="control-group">
-                            <!-- Password-->
-                            <label class="control-label" for="password">Mot de passe</label>
+                            <!-- Mot de passe-->
+                            <label class="control-label" for="password">Mot de pass</label>
                             <div class="controls">
                               <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
                             </div>
@@ -51,7 +114,7 @@
                     </div>
                     <div class="tab-pane fade" id="create">
                       <form id="tab">
-                        <label>Nom utilisateur</label>
+                        <label>Nom d'utilisateur</label>
                         <input type="text" value="" class="input-xlarge">
                         <label>Prénom</label>
                         <input type="text" value="" class="input-xlarge">
@@ -64,7 +127,7 @@
                         </textarea>
      
                         <div>
-                          <button class="btn btn-primary">Créer compte</button>
+                          <button class="btn btn-primary">Inscription</button>
                         </div>
                       </form>
                     </div>
@@ -74,6 +137,8 @@
         </div>
 	</div>
 </div>
+
+
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
@@ -88,3 +153,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
 </body>
+
+
+</html>

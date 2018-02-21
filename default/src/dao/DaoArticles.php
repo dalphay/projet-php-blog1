@@ -18,7 +18,7 @@ class DaoArticles {
       
         try {
            
-            $query = Articles::getInstance()->prepare('SELECT * FROM articles');
+            $query = Connect::getInstance()->prepare('SELECT * FROM articles');
             
             $query->execute();
            
@@ -37,6 +37,34 @@ class DaoArticles {
         
         return $tab;
     }
+
+    public function getByUser($idUser):array {
+        
+         $tab = [];
+       
+         try {
+            
+            $query = Connect::getInstance()->prepare('SELECT * FROM articles WHERE id_user = :id');
+            $query->bindValue(':id', $idUser, \PDO::PARAM_INT);
+            
+             
+             $query->execute();
+            
+             while($row = $query->fetch()) {
+              
+                 $articles = new Articles( new \DateTime($row['date']),
+                             $row['titre'], 
+                             $row['contenu'],             
+                             $row['id']);
+             
+                 $tab[] = $articles;
+             }
+         }catch(\PDOException $e) {
+             echo $e;
+         }
+         
+         return $tab;
+     }
    
     public function getById(int $id) {
         
