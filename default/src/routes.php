@@ -35,7 +35,7 @@ $app->get('/blog/{id}', function (Request $request, Response $response, array $a
     return $this->view->render($response, 'blog.twig', [
         'articles' => $articles
     ]);
-})->setName('index');
+})->setName('blog');
 
 $app->get('/adduser', function (Request $request, Response $response, array $args) {
     return $this->view->render($response, 'inscription.twig');
@@ -173,8 +173,12 @@ $app->post('/login', function (Request $request, Response $response, array $args
     $user = $dao->getByEmail($postData['email']);
     if(!empty($user) && $postData['password'] === $user->getPassword()){
         $_SESSION['user']=$user;
+        $redirectUrl = $this->router->pathFor('blog', ['id'=> $user->getId()]);
+        
+        return $response->withRedirect($redirectUrl);
+        
 
-        return $response->withRedirect('/');
+        return $response->withRedirect('blog');
 
     }
 

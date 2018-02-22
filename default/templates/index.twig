@@ -98,7 +98,7 @@
             
             <ul id="tab">
           {% for user in users %}
-                <li class="cadre">{{user.id}} {{person.name}} {{user.email}} {{user.password}}</li>
+                <a href="{{ path_for('adduser') }}"><li class="cadre">{{user.name}} </li></a>
                 
           {% endfor %}                               
             </ul>                                 

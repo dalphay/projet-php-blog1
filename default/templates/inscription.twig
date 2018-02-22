@@ -18,7 +18,7 @@
                   </ul>
                   <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="login">
-                      <form class="form-horizontal" action="{{path_for('login')}}" method="POST">
+                      <form class="form-horizontal" action="{{path_for('login', {'id': id})}}" method="POST">
                         <fieldset>
                           <div id="legend">
                             <legend class="">S'identifier</legend>
